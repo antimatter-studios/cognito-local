@@ -3,6 +3,7 @@ import { DataStore } from "./dataStore";
 export type DataStoreCache = {
   get(key: string): DataStore | null;
   set(key: string, value: DataStore): void;
+  unset(key: string): void;
 };
 
 export class InMemoryCache implements DataStoreCache {
@@ -15,6 +16,10 @@ export class InMemoryCache implements DataStoreCache {
   set(key: string, value: DataStore): void {
     this.cache[key] = value;
   }
+
+  unset(key: string): void {
+    delete this.cache[key];
+  }
 }
 
 export class NoOpCache implements DataStoreCache {
@@ -24,4 +29,7 @@ export class NoOpCache implements DataStoreCache {
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   set(): void {}
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  unset(): void {}
 }
