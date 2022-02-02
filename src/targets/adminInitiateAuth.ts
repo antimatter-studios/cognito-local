@@ -42,6 +42,7 @@ const adminUserPasswordAuthFlow = async (
     ctx,
     req.ClientId
   );
+
   let user = await userPool.getUserByUsername(ctx, req.AuthParameters.USERNAME);
 
   if (!user && services.triggers.enabled("UserMigration")) {

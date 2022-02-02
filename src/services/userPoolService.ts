@@ -153,6 +153,14 @@ export interface UserPoolServiceFactory {
     clientsDataStore: DataStore,
     defaultOptions: UserPool
   ): Promise<UserPoolService>;
+
+  get(
+    ctx: Context,
+    userPoolId: string,
+    clientsDataStore: DataStore
+  ): Promise<UserPoolService | null>;
+
+  delete(ctx: Context, userPool: UserPool): boolean;
 }
 
 export class UserPoolServiceImpl implements UserPoolService {
@@ -339,12 +347,13 @@ export class UserPoolServiceFactoryImpl implements UserPoolServiceFactory {
   ): Promise<UserPoolService> {
     const id = defaultOptions.Id;
 
-    ctx.logger.debug({ id }, "UserPoolServiceImpl.create");
+    ctx.logger.debug({ id }, "UserPoolServiceFactoryImpl.create");
 
     const dataStore = await this.dataStoreFactory.create(ctx, id, {
       Users: {},
       Options: defaultOptions,
     });
+
     const config = await dataStore.get<UserPool>(
       ctx,
       "Options",
@@ -357,6 +366,48 @@ export class UserPoolServiceFactoryImpl implements UserPoolServiceFactory {
       dataStore,
       config
     );
+  }
+
+  public async get(
+    ctx: Context,
+    userPoolId: string,
+    clientsDataStore: DataStore
+  ): Promise<UserPoolService | null> {
+    ctx.logger.debug(
+      { id: userPoolId },
+      `UserPoolServiceFactoryImpl.get(${userPoolId})`
+    );
+
+    const dataStore = this.dataStoreFactory.get(ctx, userPoolId);
+
+    if (!dataStore) {
+      return null;
+    }
+
+    //  NOTE: If this type guard a good idea, I'm just trying to prevent warnings from typescript about using nulls
+    const config = (await dataStore.get<UserPool>(ctx, "Options")) as UserPool;
+
+    return new UserPoolServiceImpl(
+      clientsDataStore,
+      this.clock,
+      dataStore,
+      config
+    );
+  }
+
+  public delete(ctx: Context, userPool: UserPool): boolean {
+    ctx.logger.debug(
+      { id: userPool.Id },
+      `UserPoolServiceFactoryImpl.delete(${userPool.Id})`
+    );
+
+    const dataStore = this.dataStoreFactory.get(ctx, userPool.Id);
+
+    if (!dataStore) {
+      return false;
+    }
+
+    return this.dataStoreFactory.delete(ctx, userPool.Id);
   }
 }
 

@@ -265,8 +265,13 @@ export const USER_POOL_AWS_DEFAULTS: UserPoolDefaults = {
 
 export interface CognitoService {
   createUserPool(ctx: Context, userPool: UserPool): Promise<UserPool>;
+  deleteUserPool(ctx: Context, userPool: UserPool): boolean;
   getAppClient(ctx: Context, clientId: string): Promise<AppClient | null>;
-  getUserPool(ctx: Context, userPoolId: string): Promise<UserPoolService>;
+  deleteAppClient(ctx: Context, client: AppClient): Promise<boolean>;
+  getUserPool(
+    ctx: Context,
+    userPoolId: string
+  ): Promise<UserPoolService | null>;
   getUserPoolForClientId(
     ctx: Context,
     clientId: string
@@ -321,16 +326,18 @@ export class CognitoServiceImpl implements CognitoService {
     return service.config;
   }
 
+  public deleteUserPool(ctx: Context, userPool: UserPool): boolean {
+    ctx.logger.debug("CognitoServiceImpl.deleteUserPool");
+
+    return this.userPoolServiceFactory.delete(ctx, userPool);
+  }
+
   public async getUserPool(
     ctx: Context,
     userPoolId: string
-  ): Promise<UserPoolService> {
+  ): Promise<UserPoolService | null> {
     ctx.logger.debug({ userPoolId }, "CognitoServiceImpl.getUserPool");
-    return this.userPoolServiceFactory.create(ctx, this.clients, {
-      ...USER_POOL_AWS_DEFAULTS,
-      ...this.userPoolDefaultConfig,
-      Id: userPoolId,
-    });
+    return await this.userPoolServiceFactory.get(ctx, userPoolId, this.clients);
   }
 
   public async getUserPoolForClientId(
@@ -342,6 +349,9 @@ export class CognitoServiceImpl implements CognitoService {
     if (!appClient) {
       throw new ResourceNotFoundError();
     }
+
+    // FIXME: This should search for a user pool that belongs to a user pool client id
+    // NOTE: but all this does is create a new user pool with the client, so it's always going to succeed
 
     return this.userPoolServiceFactory.create(ctx, this.clients, {
       ...USER_POOL_AWS_DEFAULTS,
@@ -358,6 +368,24 @@ export class CognitoServiceImpl implements CognitoService {
     return this.clients.get(ctx, ["Clients", clientId]);
   }
 
+  public async deleteAppClient(
+    ctx: Context,
+    client: AppClient
+  ): Promise<boolean> {
+    ctx.logger.debug(
+      { clientId: client.ClientId },
+      "CognitoServiceImpl.deleteAppClient"
+    );
+
+    try {
+      await this.clients.delete(ctx, ["Clients", client.ClientId]);
+
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   public async listUserPools(ctx: Context): Promise<readonly UserPool[]> {
     ctx.logger.debug("CognitoServiceImpl.listUserPools");
     const entries = await readdir(this.dataDirectory, { withFileTypes: true });
@@ -372,12 +400,12 @@ export class CognitoServiceImpl implements CognitoService {
               CLIENTS_DATABASE_NAME
         )
         .map(async (x) => {
-          const userPool = await this.getUserPool(
+          const userPool = (await this.getUserPool(
             ctx,
             path.basename(x.name, path.extname(x.name))
-          );
+          )) as UserPoolService;
 
-          return userPool.config;
+          return userPool?.config;
         })
     );
   }

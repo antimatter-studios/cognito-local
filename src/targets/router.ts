@@ -10,6 +10,9 @@ import { CreateUserPool } from "./createUserPool";
 import { CreateUserPoolClient } from "./createUserPoolClient";
 import { DeleteUser } from "./deleteUser";
 import { DeleteUserAttributes } from "./deleteUserAttributes";
+import { DeleteUserPool } from "./deleteUserPool";
+import { DeleteUserPoolClient } from "./deleteUserPoolClient";
+import { DescribeUserPool } from "./describeUserPool";
 import { DescribeUserPoolClient } from "./describeUserPoolClient";
 import { ForgotPassword } from "./forgotPassword";
 import { ChangePassword } from "./changePassword";
@@ -21,6 +24,7 @@ import { ListUsers } from "./listUsers";
 import { RespondToAuthChallenge } from "./respondToAuthChallenge";
 import { SignUp } from "./signUp";
 import { GetUser } from "./getUser";
+import { GetUserPoolMfaConfig } from "./getUserPoolMfaConfig";
 import { AdminCreateUser } from "./adminCreateUser";
 import { AdminGetUser } from "./adminGetUser";
 import { AdminDeleteUser } from "./adminDeleteUser";
@@ -48,10 +52,14 @@ export const Targets = {
   CreateUserPoolClient,
   DeleteUser,
   DeleteUserAttributes,
+  DeleteUserPool,
+  DeleteUserPoolClient,
+  DescribeUserPool,
   DescribeUserPoolClient,
   ForgotPassword,
   GetUser,
   GetUserAttributeVerificationCode,
+  GetUserPoolMfaConfig,
   InitiateAuth,
   ListGroups,
   ListUserPools,

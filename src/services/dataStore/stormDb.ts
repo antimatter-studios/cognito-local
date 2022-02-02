@@ -1,6 +1,5 @@
 import fs from "fs";
 import StormDB from "stormdb";
-import { promisify } from "util";
 import { Context } from "../context";
 import { DataStoreCache } from "./cache";
 import { DataStore } from "./dataStore";
@@ -46,8 +45,6 @@ export class StormDBDataStore implements DataStore {
     await this.db.save();
   }
 }
-
-const mkdir = promisify(fs.mkdir);
 
 const replaceDatesWithISOStrings: (
   this: Record<string, unknown>,
@@ -104,6 +101,8 @@ export class StormDBDataStoreFactory implements DataStoreFactory {
   public constructor(directory: string, dataStoreCache: DataStoreCache) {
     this.directory = directory;
     this.cache = dataStoreCache;
+
+    fs.mkdirSync(this.directory, { recursive: true });
   }
 
   public async create(
@@ -111,8 +110,7 @@ export class StormDBDataStoreFactory implements DataStoreFactory {
     id: string,
     defaults: object
   ): Promise<DataStore> {
-    ctx.logger.debug({ id }, "createDataStore");
-    await mkdir(this.directory, { recursive: true });
+    ctx.logger.debug({ id }, "StormDBDataStoreFactory.create");
 
     const cachedDb = this.cache.get(id);
     if (cachedDb) {
@@ -133,5 +131,59 @@ export class StormDBDataStoreFactory implements DataStoreFactory {
     this.cache.set(id, dataStore);
 
     return dataStore;
+  }
+
+  public get(ctx: Context, id: string): DataStore | null {
+    ctx.logger.debug({ id }, "StormDBDataStoreFactory.get");
+
+    try {
+      const cachedDb = this.cache.get(id);
+
+      if (cachedDb) {
+        ctx.logger.debug({ id }, "Found cached data store");
+        return cachedDb;
+      }
+
+      const filename = `${this.directory}/${id}.json`;
+
+      if (fs.existsSync(filename)) {
+        ctx.logger.debug({ id }, `Opening existing data store: ${filename}`);
+        const db = createStormDBInstance(this.directory, id);
+
+        const dataStore = new StormDBDataStore(db);
+
+        this.cache.set(id, dataStore);
+
+        return dataStore;
+      }
+    } catch {
+      // do nothing
+    }
+
+    return null;
+  }
+
+  public delete(ctx: Context, id: string): boolean {
+    ctx.logger.debug({ id }, "StormDBDataStoreFactory.delete");
+
+    try {
+      const cachedDb = this.cache.get(id);
+
+      if (cachedDb) {
+        ctx.logger.debug({ id }, "Removing cached data store");
+        this.cache.unset(id);
+      } else {
+        ctx.logger.debug({ id }, "No cached data store found");
+      }
+
+      const filename = `${this.directory}/${id}.json`;
+
+      ctx.logger.debug({ filename }, "Removing user pool database");
+      fs.unlinkSync(filename);
+
+      return true;
+    } catch {
+      return false;
+    }
   }
 }
