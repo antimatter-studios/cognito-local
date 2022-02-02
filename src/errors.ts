@@ -4,10 +4,12 @@ import { Logger } from "./log";
 export class UnsupportedError extends Error {}
 
 export class CognitoError extends Error {
+  public readonly __type: string;
   public readonly code: string;
 
   public constructor(code: string, message: string) {
     super(message);
+    this.__type = code;
     this.code = `CognitoLocal#${code}`;
   }
 }
@@ -49,8 +51,8 @@ export class PasswordResetRequiredError extends CognitoError {
 }
 
 export class ResourceNotFoundError extends CognitoError {
-  public constructor() {
-    super("ResourceNotFoundException", "Resource not found");
+  public constructor(message?: string) {
+    super("ResourceNotFoundException", message ?? "Resource not found");
   }
 }
 
