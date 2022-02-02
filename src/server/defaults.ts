@@ -52,6 +52,7 @@ export const createDefaultServer = async (
     ctx,
     config.UserPoolDefaults
   );
+
   const triggers = new TriggersService(
     clock,
     cognitoClient,
@@ -61,23 +62,28 @@ export const createDefaultServer = async (
     )
   );
 
+  const messages = new MessagesService(
+    triggers,
+    new MessageDeliveryService(new ConsoleMessageSender())
+  );
+
+  const tokenGenerator = new JwtTokenGenerator(
+    clock,
+    triggers,
+    config.TokenConfig
+  );
+
   return createServer(
     Router({
       clock,
       cognito: cognitoClient,
       config,
-      messages: new MessagesService(
-        triggers,
-        new MessageDeliveryService(new ConsoleMessageSender())
-      ),
+      messages,
       otp,
-      tokenGenerator: new JwtTokenGenerator(
-        clock,
-        triggers,
-        config.TokenConfig
-      ),
+      tokenGenerator,
       triggers,
     }),
+
     logger,
     {
       development: !!process.env.COGNITO_LOCAL_DEVMODE,
