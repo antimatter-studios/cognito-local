@@ -2,7 +2,7 @@ import {
   AdminSetUserPasswordRequest,
   AdminSetUserPasswordResponse,
 } from "aws-sdk/clients/cognitoidentityserviceprovider";
-import { UserNotFoundError } from "../errors";
+import { ResourceNotFoundError, UserNotFoundError } from "../errors";
 import { Services } from "../services";
 import { Target } from "./router";
 
@@ -20,12 +20,17 @@ export const AdminSetUserPassword =
   }: AdminSetUserPasswordServices): AdminSetUserPasswordTarget =>
   async (ctx, req) => {
     const userPool = await cognito.getUserPool(ctx, req.UserPoolId);
-    const user = await userPool.getUserByUsername(ctx, req.Username);
+
+    if (!userPool) {
+      throw new ResourceNotFoundError();
+    }
+
+    const user = await userPool?.getUserByUsername(ctx, req.Username);
     if (!user) {
       throw new UserNotFoundError("User does not exist");
     }
 
-    await userPool.saveUser(ctx, {
+    await userPool?.saveUser(ctx, {
       ...user,
       Password: req.Password,
       UserLastModifiedDate: clock.get(),

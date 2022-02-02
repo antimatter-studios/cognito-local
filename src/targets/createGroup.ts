@@ -2,6 +2,7 @@ import {
   CreateGroupRequest,
   CreateGroupResponse,
 } from "aws-sdk/clients/cognitoidentityserviceprovider";
+import { ResourceNotFoundError } from "../errors";
 import { Services } from "../services";
 import { Group } from "../services/userPoolService";
 import { Target } from "./router";
@@ -15,6 +16,10 @@ export const CreateGroup =
   async (ctx, req) => {
     const userPool = await cognito.getUserPool(ctx, req.UserPoolId);
 
+    if (!userPool) {
+      throw new ResourceNotFoundError();
+    }
+
     const now = clock.get();
     const group: Group = {
       CreationDate: now,
@@ -25,7 +30,7 @@ export const CreateGroup =
       RoleArn: req.RoleArn,
     };
 
-    await userPool.saveGroup(ctx, group);
+    await userPool?.saveGroup(ctx, group);
 
     return {
       Group: {

@@ -3,7 +3,7 @@ import {
   AdminConfirmSignUpResponse,
 } from "aws-sdk/clients/cognitoidentityserviceprovider";
 import { Services } from "../services";
-import { NotAuthorizedError } from "../errors";
+import { NotAuthorizedError, ResourceNotFoundError } from "../errors";
 import { attribute, attributesAppend } from "../services/userPoolService";
 import { Target } from "./router";
 
@@ -25,7 +25,13 @@ export const AdminConfirmSignUp =
   }: AdminConfirmSignUpServices): AdminConfirmSignUpTarget =>
   async (ctx, req) => {
     const userPool = await cognito.getUserPool(ctx, req.UserPoolId);
+
+    if (!userPool) {
+      throw new ResourceNotFoundError();
+    }
+
     const user = await userPool.getUserByUsername(ctx, req.Username);
+
     if (!user) {
       throw new NotAuthorizedError();
     }

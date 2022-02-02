@@ -2,7 +2,11 @@ import {
   AdminUpdateUserAttributesRequest,
   AdminUpdateUserAttributesResponse,
 } from "aws-sdk/clients/cognitoidentityserviceprovider";
-import { InvalidParameterError, NotAuthorizedError } from "../errors";
+import {
+  InvalidParameterError,
+  NotAuthorizedError,
+  ResourceNotFoundError,
+} from "../errors";
 import { Messages, Services, UserPoolService } from "../services";
 import { USER_POOL_AWS_DEFAULTS } from "../services/cognitoService";
 import { selectAppropriateDeliveryMethod } from "../services/messageDelivery/deliveryMethod";
@@ -65,6 +69,11 @@ export const AdminUpdateUserAttributes =
   }: AdminUpdateUserAttributesServices): AdminUpdateUserAttributesTarget =>
   async (ctx, req) => {
     const userPool = await cognito.getUserPool(ctx, req.UserPoolId);
+
+    if (!userPool) {
+      throw new ResourceNotFoundError();
+    }
+
     const user = await userPool.getUserByUsername(ctx, req.Username);
     if (!user) {
       throw new NotAuthorizedError();

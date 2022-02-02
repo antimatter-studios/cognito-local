@@ -2,6 +2,7 @@ import {
   ListGroupsRequest,
   ListGroupsResponse,
 } from "aws-sdk/clients/cognitoidentityserviceprovider";
+import { ResourceNotFoundError } from "../errors";
 import { Services } from "../services";
 import { Target } from "./router";
 
@@ -16,6 +17,11 @@ export const ListGroups =
     // TODO: PaginationToken support
 
     const userPool = await cognito.getUserPool(ctx, req.UserPoolId);
+
+    if (!userPool) {
+      throw new ResourceNotFoundError();
+    }
+
     const groups = await userPool.listGroups(ctx);
 
     return {

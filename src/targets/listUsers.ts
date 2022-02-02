@@ -2,6 +2,7 @@ import {
   ListUsersRequest,
   ListUsersResponse,
 } from "aws-sdk/clients/cognitoidentityserviceprovider";
+import { ResourceNotFoundError } from "../errors";
 import { Services } from "../services";
 import { Target } from "./router";
 
@@ -11,6 +12,11 @@ export const ListUsers =
   ({ cognito }: Pick<Services, "cognito">): ListUsersTarget =>
   async (ctx, req) => {
     const userPool = await cognito.getUserPool(ctx, req.UserPoolId);
+
+    if (!userPool) {
+      throw new ResourceNotFoundError();
+    }
+
     const users = await userPool.listUsers(ctx);
 
     // TODO: support AttributesToGet

@@ -7,6 +7,7 @@ import shortUUID from "short-uuid";
 import * as uuid from "uuid";
 import {
   InvalidParameterError,
+  ResourceNotFoundError,
   UnsupportedError,
   UsernameExistsError,
 } from "../errors";
@@ -98,6 +99,11 @@ export const AdminCreateUser =
   }: AdminCreateUserServices): AdminCreateUserTarget =>
   async (ctx, req) => {
     const userPool = await cognito.getUserPool(ctx, req.UserPoolId);
+
+    if (!userPool) {
+      throw new ResourceNotFoundError();
+    }
+
     const existingUser = await userPool.getUserByUsername(ctx, req.Username);
     if (existingUser && req.MessageAction === "RESEND") {
       throw new UnsupportedError("AdminCreateUser with MessageAction=RESEND");
