@@ -11,6 +11,7 @@ export { UserPoolService, UserPoolServiceImpl } from "./userPoolService";
 export { Triggers, TriggersService } from "./triggers";
 export { Lambda, LambdaService } from "./lambda";
 export { Messages, MessagesService } from "./messages";
+export { LogService } from "./LogService";
 
 export interface Services {
   clock: Clock;
