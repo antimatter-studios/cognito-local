@@ -12,4 +12,6 @@ export const newMockDataStoreFactory = (
   dataStore: jest.Mocked<DataStore> = newMockDataStore()
 ): jest.Mocked<DataStoreFactory> => ({
   create: jest.fn().mockResolvedValue(dataStore),
+  get: jest.fn(),
+  delete: jest.fn(),
 });

@@ -22,4 +22,6 @@ export const newMockUserPoolServiceFactory = (
   cognitoService: jest.Mocked<UserPoolService> = newMockUserPoolService()
 ): jest.Mocked<UserPoolServiceFactory> => ({
   create: jest.fn().mockResolvedValue(cognitoService),
+  get: jest.fn().mockResolvedValue(cognitoService),
+  delete: jest.fn().mockResolvedValue(true),
 });

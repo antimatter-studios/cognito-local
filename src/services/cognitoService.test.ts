@@ -48,7 +48,7 @@ describe("Cognito Service", () => {
     // used that doesn't exist we just create it and allow the operation to
     // continue. This may change in a later release.
     it("creates a user pool by the id specified", async () => {
-      mockUserPoolServiceFactory.create.mockResolvedValue(mockUserPool);
+      mockUserPoolServiceFactory.get.mockResolvedValue(mockUserPool);
 
       const clientsDataStore = newMockDataStore();
 
@@ -60,13 +60,15 @@ describe("Cognito Service", () => {
         mockUserPoolServiceFactory
       );
 
-      const userPool = await cognitoClient.getUserPool(TestContext, "testing");
+      const userPoolId = "testing";
+      const userPool = await cognitoClient.getUserPool(TestContext, userPoolId);
 
-      expect(mockUserPoolServiceFactory.create).toHaveBeenCalledWith(
+      expect(mockUserPoolServiceFactory.get).toHaveBeenCalledWith(
         TestContext,
-        clientsDataStore,
-        { ...USER_POOL_AWS_DEFAULTS, Id: "testing", UsernameAttributes: [] }
+        userPoolId,
+        clientsDataStore
       );
+
       expect(userPool).toEqual(mockUserPool);
     });
   });

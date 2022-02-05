@@ -51,7 +51,7 @@ describe("User Pool Service", () => {
         const now = new Date();
         const userPool = await cognitoClient.getUserPool(TestContext, "local");
 
-        await userPool.saveUser(TestContext, {
+        await userPool?.saveUser(TestContext, {
           Username: username,
           Password: "hunter3",
           UserStatus: "UNCONFIRMED",
@@ -90,7 +90,7 @@ describe("User Pool Service", () => {
         const now = new Date();
         const userPool = await cognitoClient.getUserPool(TestContext, "local");
 
-        await userPool.saveUser(TestContext, {
+        await userPool?.saveUser(TestContext, {
           Username: username,
           Password: "hunter3",
           UserStatus: "UNCONFIRMED",
@@ -126,7 +126,7 @@ describe("User Pool Service", () => {
           },
         });
 
-        await userPool.saveUser(TestContext, {
+        await userPool?.saveUser(TestContext, {
           Username: username,
           Password: "hunter3",
           UserStatus: "CONFIRMED",
@@ -165,11 +165,11 @@ describe("User Pool Service", () => {
 
   describe("getUserByUsername", () => {
     describe.each(validUsernameExamples)("with username %s", (username) => {
-      let userPool: UserPoolService;
+      let userPool: UserPoolService | null;
       beforeAll(async () => {
         userPool = await cognitoClient.getUserPool(TestContext, "local");
 
-        await userPool.saveUser(TestContext, {
+        await userPool?.saveUser(TestContext, {
           Username: username,
           Password: "hunter2",
           UserStatus: "UNCONFIRMED",
@@ -186,13 +186,13 @@ describe("User Pool Service", () => {
       });
 
       it("returns null if user doesn't exist", async () => {
-        const user = await userPool.getUserByUsername(TestContext, "invalid");
+        const user = await userPool?.getUserByUsername(TestContext, "invalid");
 
         expect(user).toBeNull();
       });
 
       it("returns existing user by their username", async () => {
-        const user = await userPool.getUserByUsername(TestContext, username);
+        const user = await userPool?.getUserByUsername(TestContext, username);
 
         expect(user).not.toBeNull();
         expect(user?.Username).toEqual(username);
@@ -202,12 +202,12 @@ describe("User Pool Service", () => {
 
   describe("getUserByRefreshToken", () => {
     const username = "User";
-    let userPool: UserPoolService;
+    let userPool: UserPoolService | null;
 
     beforeAll(async () => {
       userPool = await cognitoClient.getUserPool(TestContext, "local");
 
-      await userPool.saveUser(TestContext, {
+      await userPool?.saveUser(TestContext, {
         Username: username,
         Password: "hunter2",
         UserStatus: "UNCONFIRMED",
@@ -224,13 +224,16 @@ describe("User Pool Service", () => {
     });
 
     it("returns null if the refresh token doesn't match a user", async () => {
-      const user = await userPool.getUserByRefreshToken(TestContext, "invalid");
+      const user = await userPool?.getUserByRefreshToken(
+        TestContext,
+        "invalid"
+      );
 
       expect(user).toBeNull();
     });
 
     it("returns user by their refresh token", async () => {
-      const user = await userPool.getUserByRefreshToken(
+      const user = await userPool?.getUserByRefreshToken(
         TestContext,
         "refresh token"
       );
@@ -256,18 +259,18 @@ describe("User Pool Service", () => {
       RefreshTokens: [],
     };
 
-    let userPool: UserPoolService;
+    let userPool: UserPoolService | null;
 
     beforeAll(async () => {
       userPool = await cognitoClient.getUserPool(TestContext, "local");
 
-      await userPool.saveUser(TestContext, user);
+      await userPool?.saveUser(TestContext, user);
     });
 
     it("saves a refresh token on the user", async () => {
-      await userPool.storeRefreshToken(TestContext, "refresh token", user);
+      await userPool?.storeRefreshToken(TestContext, "refresh token", user);
 
-      const foundUser = await userPool.getUserByRefreshToken(
+      const foundUser = await userPool?.getUserByRefreshToken(
         TestContext,
         "refresh token"
       );
@@ -280,14 +283,14 @@ describe("User Pool Service", () => {
   });
 
   describe("listUsers", () => {
-    let userPool: UserPoolService;
+    let userPool: UserPoolService | null;
     let now: Date;
 
     beforeAll(async () => {
       now = new Date();
       userPool = await cognitoClient.getUserPool(TestContext, "local");
 
-      await userPool.saveUser(TestContext, {
+      await userPool?.saveUser(TestContext, {
         Username: "1",
         Password: "hunter2",
         UserStatus: "UNCONFIRMED",
@@ -302,7 +305,7 @@ describe("User Pool Service", () => {
         RefreshTokens: [],
       });
 
-      await userPool.saveUser(TestContext, {
+      await userPool?.saveUser(TestContext, {
         Username: "2",
         Password: "password1",
         UserStatus: "UNCONFIRMED",
@@ -315,7 +318,7 @@ describe("User Pool Service", () => {
     });
 
     it("returns all users", async () => {
-      const users = await userPool.listUsers(TestContext);
+      const users = await userPool?.listUsers(TestContext);
 
       expect(users).toEqual([
         {

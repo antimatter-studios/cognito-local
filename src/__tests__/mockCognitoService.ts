@@ -6,9 +6,11 @@ export const newMockCognitoService = (
   userPoolClient: UserPoolService = newMockUserPoolService()
 ): jest.Mocked<CognitoService> => ({
   createUserPool: jest.fn(),
-  getAppClient: jest.fn(),
+  deleteUserPool: jest.fn(),
   getUserPool: jest.fn().mockResolvedValue(userPoolClient),
   getUserPoolForClientId: jest.fn().mockResolvedValue(userPoolClient),
+  getAppClient: jest.fn(),
+  deleteAppClient: jest.fn(),
   listUserPools: jest.fn(),
 });
 
