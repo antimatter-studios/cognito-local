@@ -111,7 +111,8 @@
       }],
       ["@codedependant/semantic-release-docker", {
         "dockerLogin": false,
-        "dockerImage": "jagregory/cognito-local"
+        "dockerImage": "christhomas/cognito-local",
+        "dockerRegistry": "ghcr.io"
       }],
       ["@semantic-release/git", {
         "assets": ["CHANGELOG.md"]
