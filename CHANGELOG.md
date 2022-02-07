@@ -1,3 +1,24 @@
+# [3.14.0](https://github.com/christhomas/cognito-local/compare/v3.13.3...v3.14.0) (2022-02-07)
+
+
+### Bug Fixes
+
+* all the tests run now ([ce76387](https://github.com/christhomas/cognito-local/commit/ce763874a7f00f10cfff31d14151d15491a9ed8d))
+* allow cache keys to be deleted ([ad2c5bf](https://github.com/christhomas/cognito-local/commit/ad2c5bfa8fbb4d14023aa1c76c680dde7aaa5eb4))
+* aws error handling needs this extra __type field to handle responses correctly ([798603d](https://github.com/christhomas/cognito-local/commit/798603de59f51c84bbf7b92487cc63299ea55a57))
+* check the return from getUserPool is null before attempting to use it ([c2f122f](https://github.com/christhomas/cognito-local/commit/c2f122fdf78a710cdfc6c534a75812d9cedbfd04))
+* the actions ([e9c28d2](https://github.com/christhomas/cognito-local/commit/e9c28d2dd20ee1f1179ad2902585c3814038d379))
+* the actions ([8a7e7d6](https://github.com/christhomas/cognito-local/commit/8a7e7d6e4334eb3fc9926ff91eebb2ebfb1054be))
+* the actions ([801e366](https://github.com/christhomas/cognito-local/commit/801e36633043b9ba056ab757b8cbf3edf337c59f))
+* the actions ([b05db07](https://github.com/christhomas/cognito-local/commit/b05db074e5c0cd3813c8850c7cb9eb6dab9a670c))
+* the actions ([98f2635](https://github.com/christhomas/cognito-local/commit/98f2635253be14c71f0a2195ddf6439ab51f71fd))
+* the github pipeline actions ([5b217d2](https://github.com/christhomas/cognito-local/commit/5b217d2ad448b7cc321466a5d998269b39cc5bdd))
+
+
+### Features
+
+* add missing aws functions and their requirements for managing databases ([d7d5f55](https://github.com/christhomas/cognito-local/commit/d7d5f55e2675ff0763359681aed37e935af69b7c))
+
 ## [3.13.3](https://github.com/jagregory/cognito-local/compare/v3.13.2...v3.13.3) (2022-01-15)
 
 
