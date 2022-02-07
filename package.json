@@ -101,7 +101,7 @@
     "url": "https://github.com/jagregory/cognito-local.git"
   },
   "release": {
-    "branches": ["master"],
+    "branches": ["next"],
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
