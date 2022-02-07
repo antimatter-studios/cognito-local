@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [next]
+    branches: [master]
   pull_request_target:
-    branches: [next]
+    branches: [master]
 
 jobs:
   lint:
