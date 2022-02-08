@@ -1,4 +1,4 @@
-import { MockClock } from "../mocks/MockClock";
+import { DateClock } from "../services/clock";
 import { MockCognitoService } from "../mocks/MockCognitoService";
 import { MockUserPoolService } from "../mocks/MockUserPoolService";
 import { MockContext } from "../mocks/MockContext";
@@ -6,7 +6,7 @@ import { MockContext } from "../mocks/MockContext";
 import { CognitoService } from "../services";
 import { USER_POOL_AWS_DEFAULTS } from "../services/cognitoService";
 import { CreateUserPool, CreateUserPoolTarget } from "./createUserPool";
-import { MockUserPool } from "../mocks/MockUserPool";
+import { UserPoolModel } from "../models/UserPoolModel";
 
 const originalDate = new Date();
 
@@ -18,12 +18,12 @@ describe("CreateUserPool target", () => {
     mockCognitoService = MockCognitoService(MockUserPoolService());
     createUserPool = CreateUserPool({
       cognito: mockCognitoService,
-      clock: new MockClock(originalDate),
+      clock: new DateClock(originalDate),
     });
   });
 
   it("creates a new user pool", async () => {
-    const createdUserPool = MockUserPool();
+    const createdUserPool = UserPoolModel();
     mockCognitoService.createUserPool.mockResolvedValue(createdUserPool);
 
     const result = await createUserPool(MockContext, {
@@ -50,7 +50,7 @@ describe("CreateUserPool target", () => {
   });
 
   it("creates a new user pool with a custom attribute", async () => {
-    const createdUserPool = MockUserPool();
+    const createdUserPool = UserPoolModel();
     mockCognitoService.createUserPool.mockResolvedValue(createdUserPool);
 
     const result = await createUserPool(MockContext, {
@@ -93,7 +93,7 @@ describe("CreateUserPool target", () => {
   });
 
   it("creates a new user pool with an overridden attribute", async () => {
-    const createdUserPool = MockUserPool();
+    const createdUserPool = UserPoolModel();
     mockCognitoService.createUserPool.mockResolvedValue(createdUserPool);
 
     const result = await createUserPool(MockContext, {

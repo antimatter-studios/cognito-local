@@ -1,4 +1,4 @@
-import { MockClock } from "../mocks/MockClock";
+import { DateClock } from "../services/clock";
 import { MockDataStore, MockDataStoreFactory } from "../mocks/MockDataStore";
 import { MockUserPoolServiceFactory } from "../mocks/MockUserPoolService";
 import { MockContext } from "../mocks/MockContext";
@@ -15,7 +15,7 @@ describe("CognitoServiceFactory", () => {
     const mockDataStoreFactory = MockDataStoreFactory();
     const factory = new CognitoServiceFactoryImpl(
       "data-directory",
-      new MockClock(new Date()),
+      new DateClock(new Date()),
       mockDataStoreFactory,
       MockUserPoolServiceFactory()
     );
@@ -52,7 +52,7 @@ describe("Cognito Service", () => {
       const cognitoClient = new CognitoServiceImpl(
         "data-directory",
         clientsDataStore,
-        new MockClock(new Date()),
+        new DateClock(new Date()),
         { UsernameAttributes: [] },
         mockUserPoolServiceFactory
       );
@@ -80,7 +80,7 @@ describe("Cognito Service", () => {
       const cognitoClient = new CognitoServiceImpl(
         "data-directory",
         clientsDataStore,
-        new MockClock(new Date()),
+        new DateClock(new Date()),
         { UsernameAttributes: [] },
         mockUserPoolServiceFactory
       );
@@ -103,7 +103,7 @@ describe("Cognito Service", () => {
       const cognitoClient = new CognitoServiceImpl(
         "data-directory",
         clientsDataStore,
-        new MockClock(new Date()),
+        new DateClock(new Date()),
         { UsernameAttributes: [] },
         mockUserPoolServiceFactory
       );

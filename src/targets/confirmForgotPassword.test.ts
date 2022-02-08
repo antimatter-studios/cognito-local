@@ -1,4 +1,4 @@
-import { MockClock } from "../mocks/MockClock";
+import { DateClock } from "../services/clock";
 import { MockCognitoService } from "../mocks/MockCognitoService";
 import { MockTriggers } from "../mocks/MockTriggers";
 import { MockUserPoolService } from "../mocks/MockUserPoolService";
@@ -10,7 +10,7 @@ import {
   ConfirmForgotPassword,
   ConfirmForgotPasswordTarget,
 } from "./confirmForgotPassword";
-import { MockUser } from "../mocks/MockUser";
+import { MockUser } from "../models/UserModel";
 
 const currentDate = new Date();
 
@@ -19,10 +19,10 @@ describe("ConfirmForgotPassword target", () => {
   let mockUserPoolService: jest.Mocked<UserPoolService>;
   let mockTriggers: jest.Mocked<Triggers>;
 
-  let clock: MockClock;
+  let clock: DateClock;
 
   beforeEach(() => {
-    clock = new MockClock(currentDate);
+    clock = new DateClock(currentDate);
 
     mockUserPoolService = MockUserPoolService();
     mockTriggers = MockTriggers();

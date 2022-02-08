@@ -1,4 +1,4 @@
-import { MockClock } from "../mocks/MockClock";
+import { DateClock } from "../services/clock";
 import { MockCognitoService } from "../mocks/MockCognitoService";
 import { MockMessages } from "../mocks/MockMessages";
 import { MockUserPoolService } from "../mocks/MockUserPoolService";
@@ -14,17 +14,17 @@ import {
   AdminUpdateUserAttributes,
   AdminUpdateUserAttributesTarget,
 } from "./adminUpdateUserAttributes";
-import { MockUser } from "../mocks/MockUser";
+import { MockUser } from "../models/UserModel";
 
 describe("AdminUpdateUserAttributes target", () => {
   let adminUpdateUserAttributes: AdminUpdateUserAttributesTarget;
   let mockUserPoolService: jest.Mocked<UserPoolService>;
-  let clock: MockClock;
+  let clock: DateClock;
   let mockMessages: jest.Mocked<Messages>;
 
   beforeEach(() => {
     mockUserPoolService = MockUserPoolService();
-    clock = new MockClock(new Date());
+    clock = new DateClock(new Date());
     mockMessages = MockMessages();
     adminUpdateUserAttributes = AdminUpdateUserAttributes({
       clock,

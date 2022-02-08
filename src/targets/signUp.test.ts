@@ -1,9 +1,9 @@
-import { MockClock } from "../mocks/MockClock";
+import { DateClock } from "../services/clock";
 import { MockCognitoService } from "../mocks/MockCognitoService";
 import { MockMessages } from "../mocks/MockMessages";
 import { MockTriggers } from "../mocks/MockTriggers";
 import { MockUserPoolService } from "../mocks/MockUserPoolService";
-import { UUID } from "../mocks";
+import { UUID } from "../models";
 import { MockContext } from "../mocks/MockContext";
 
 import {
@@ -13,7 +13,7 @@ import {
 } from "../errors";
 import { Messages, Triggers, UserPoolService } from "../services";
 import { SignUp, SignUpTarget } from "./signUp";
-import { MockUser } from "../mocks/MockUser";
+import { MockUser } from "../models/UserModel";
 
 describe("SignUp target", () => {
   let signUp: SignUpTarget;
@@ -32,7 +32,7 @@ describe("SignUp target", () => {
     mockTriggers = MockTriggers();
     signUp = SignUp({
       cognito: MockCognitoService(mockUserPoolService),
-      clock: new MockClock(now),
+      clock: new DateClock(now),
       messages: mockMessages,
       otp: mockOtp,
       triggers: mockTriggers,

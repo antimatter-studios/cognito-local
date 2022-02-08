@@ -1,4 +1,4 @@
-import { MockClock } from "../mocks/MockClock";
+import { DateClock } from "../services/clock";
 import { MockCognitoService } from "../mocks/MockCognitoService";
 import { MockTriggers } from "../mocks/MockTriggers";
 import { MockUserPoolService } from "../mocks/MockUserPoolService";
@@ -10,11 +10,11 @@ import {
   AdminConfirmSignUp,
   AdminConfirmSignUpTarget,
 } from "./adminConfirmSignUp";
-import { MockUser } from "../mocks/MockUser";
+import { MockUser } from "../models/UserModel";
 
 const currentDate = new Date();
 
-const clock = new MockClock(currentDate);
+const clock = new DateClock(currentDate);
 
 describe("AdminConfirmSignUp target", () => {
   let adminConfirmSignUp: AdminConfirmSignUpTarget;

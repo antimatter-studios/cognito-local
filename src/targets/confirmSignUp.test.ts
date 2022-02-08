@@ -1,4 +1,4 @@
-import { MockClock } from "../mocks/MockClock";
+import { DateClock } from "../services/clock";
 import { MockCognitoService } from "../mocks/MockCognitoService";
 import { MockTriggers } from "../mocks/MockTriggers";
 import { MockUserPoolService } from "../mocks/MockUserPoolService";
@@ -8,7 +8,7 @@ import { CodeMismatchError, NotAuthorizedError } from "../errors";
 import { Triggers, UserPoolService } from "../services";
 import { attribute, attributesAppend } from "../services/userPoolService";
 import { ConfirmSignUp, ConfirmSignUpTarget } from "./confirmSignUp";
-import { MockUser } from "../mocks/MockUser";
+import { MockUser } from "../models/UserModel";
 
 const originalDate = new Date();
 
@@ -16,10 +16,10 @@ describe("ConfirmSignUp target", () => {
   let confirmSignUp: ConfirmSignUpTarget;
   let mockUserPoolService: jest.Mocked<UserPoolService>;
   let mockTriggers: jest.Mocked<Triggers>;
-  let clock: MockClock;
+  let clock: DateClock;
 
   beforeEach(() => {
-    clock = new MockClock(originalDate);
+    clock = new DateClock(originalDate);
 
     mockUserPoolService = MockUserPoolService();
     mockTriggers = MockTriggers();
