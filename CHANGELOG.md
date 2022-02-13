@@ -1,3 +1,10 @@
+## [3.14.1](https://github.com/christhomas/cognito-local/compare/v3.14.0...v3.14.1) (2022-02-13)
+
+
+### Bug Fixes
+
+* change the MockClock to the DateClock object since there is no conflict ([b6fd18c](https://github.com/christhomas/cognito-local/commit/b6fd18c79958eb87463adbd19a869afff818fd5c))
+
 # [3.14.0](https://github.com/christhomas/cognito-local/compare/v3.13.3...v3.14.0) (2022-02-07)
 
 
