@@ -3,7 +3,7 @@ import {
   CreateGroupResponse,
 } from "aws-sdk/clients/cognitoidentityserviceprovider";
 import { Services } from "../services";
-import { Group } from "../services/userPoolService";
+import { Group } from "../contracts/Group";
 import { Target } from "./Target";
 
 export type CreateGroupTarget = Target<CreateGroupRequest, CreateGroupResponse>;
