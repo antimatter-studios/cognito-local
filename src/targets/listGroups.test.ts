@@ -17,8 +17,8 @@ describe("ListGroups target", () => {
   });
 
   it("lists groups", async () => {
-    const group1 = GroupModel();
-    const group2 = GroupModel();
+    const group1 = new GroupModel();
+    const group2 = new GroupModel();
 
     mockUserPoolService.listGroups.mockResolvedValue([group1, group2]);
 

@@ -1,11 +1,20 @@
-import { Group } from "../services/userPoolService";
+import { Group } from "../contracts/Group";
 import { id } from ".";
 
-export const GroupModel = (partial?: Partial<Group>): Group => ({
-  CreationDate: partial?.CreationDate ?? new Date(),
-  Description: partial?.Description ?? undefined,
-  GroupName: partial?.GroupName ?? id("Group"),
-  LastModifiedDate: partial?.LastModifiedDate ?? new Date(),
-  Precedence: partial?.Precedence ?? undefined,
-  RoleArn: partial?.RoleArn ?? undefined,
-});
+export class GroupModel implements Group {
+  public CreationDate;
+  public Description;
+  public GroupName;
+  public LastModifiedDate;
+  public Precedence;
+  public RoleArn;
+
+  constructor(partial?: Partial<Group>) {
+    this.CreationDate = partial?.CreationDate ?? new Date();
+    this.Description = partial?.Description ?? undefined;
+    this.GroupName = partial?.GroupName ?? id("Group");
+    this.LastModifiedDate = partial?.LastModifiedDate ?? new Date();
+    this.Precedence = partial?.Precedence ?? undefined;
+    this.RoleArn = partial?.RoleArn ?? undefined;
+  }
+}
