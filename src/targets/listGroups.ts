@@ -2,9 +2,9 @@ import {
   ListGroupsRequest,
   ListGroupsResponse,
 } from "aws-sdk/clients/cognitoidentityserviceprovider";
-import { ResourceNotFoundError } from "../errors";
 import { Services } from "../services";
-import { Target } from "../server/Router";
+import { Target } from "./Target";
+import { ResourceNotFoundError } from "../errors";
 
 export type ListGroupsTarget = Target<ListGroupsRequest, ListGroupsResponse>;
 

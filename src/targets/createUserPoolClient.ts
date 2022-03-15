@@ -2,9 +2,9 @@ import {
   CreateUserPoolClientRequest,
   CreateUserPoolClientResponse,
 } from "aws-sdk/clients/cognitoidentityserviceprovider";
-import { ResourceNotFoundError } from "../errors";
 import { Services } from "../services";
-import { Target } from "../server/Router";
+import { Target } from "./Target";
+import { ResourceNotFoundError } from "../errors";
 
 export type CreateUserPoolClientTarget = Target<
   CreateUserPoolClientRequest,

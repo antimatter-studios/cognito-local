@@ -2,10 +2,14 @@ import {
   ConfirmSignUpRequest,
   ConfirmSignUpResponse,
 } from "aws-sdk/clients/cognitoidentityserviceprovider";
-import { CodeMismatchError, NotAuthorizedError } from "../errors";
+import {
+  CodeMismatchError,
+  NotAuthorizedError,
+  ResourceNotFoundError,
+} from "../errors";
 import { Services } from "../services";
 import { attribute, attributesAppend } from "../services/userPoolService";
-import { Target } from "../server/Router";
+import { Target } from "./Target";
 
 export type ConfirmSignUpTarget = Target<
   ConfirmSignUpRequest,
@@ -20,6 +24,11 @@ export const ConfirmSignUp =
   }: Pick<Services, "cognito" | "clock" | "triggers">): ConfirmSignUpTarget =>
   async (ctx, req) => {
     const userPool = await cognito.getUserPoolForClientId(ctx, req.ClientId);
+
+    if (!userPool) {
+      throw new ResourceNotFoundError();
+    }
+
     const user = await userPool.getUserByUsername(ctx, req.Username);
     if (!user) {
       throw new NotAuthorizedError();

@@ -4,7 +4,7 @@ import {
 } from "aws-sdk/clients/cognitoidentityserviceprovider";
 import { ResourceNotFoundError, UserNotFoundError } from "../errors";
 import { Services } from "../services";
-import { Target } from "../server/Router";
+import { Target } from "./Target";
 
 export type AdminSetUserPasswordTarget = Target<
   AdminSetUserPasswordRequest,
@@ -25,12 +25,12 @@ export const AdminSetUserPassword =
       throw new ResourceNotFoundError();
     }
 
-    const user = await userPool?.getUserByUsername(ctx, req.Username);
+    const user = await userPool.getUserByUsername(ctx, req.Username);
     if (!user) {
       throw new UserNotFoundError("User does not exist");
     }
 
-    await userPool?.saveUser(ctx, {
+    await userPool.saveUser(ctx, {
       ...user,
       Password: req.Password,
       UserLastModifiedDate: clock.get(),

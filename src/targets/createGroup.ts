@@ -2,10 +2,10 @@ import {
   CreateGroupRequest,
   CreateGroupResponse,
 } from "aws-sdk/clients/cognitoidentityserviceprovider";
-import { ResourceNotFoundError } from "../errors";
 import { Services } from "../services";
-import { Group } from "../services/userPoolService";
-import { Target } from "../server/Router";
+import { Group } from "../contracts/Group";
+import { Target } from "./Target";
+import { ResourceNotFoundError } from "../errors";
 
 export type CreateGroupTarget = Target<CreateGroupRequest, CreateGroupResponse>;
 
@@ -30,7 +30,7 @@ export const CreateGroup =
       RoleArn: req.RoleArn,
     };
 
-    await userPool?.saveGroup(ctx, group);
+    await userPool.saveGroup(ctx, group);
 
     return {
       Group: {
