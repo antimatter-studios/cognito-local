@@ -1,3 +1,11 @@
+## [3.14.2](https://github.com/antimatter-studios/cognito-local/compare/v3.14.1...v3.14.2) (2022-03-16)
+
+
+### Bug Fixes
+
+* change the import ([6b1a15e](https://github.com/antimatter-studios/cognito-local/commit/6b1a15e37ba0e55a5fd2886e6e88db1ed5d4a0de))
+* forgot to change the repository url in some places ([1c575ad](https://github.com/antimatter-studios/cognito-local/commit/1c575ad352bc243f739f4ce87fadc68d079b5b41))
+
 ## [3.14.1](https://github.com/christhomas/cognito-local/compare/v3.14.0...v3.14.1) (2022-02-13)
 
 
