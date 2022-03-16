@@ -1,3 +1,18 @@
+# [3.15.0](https://github.com/antimatter-studios/cognito-local/compare/v3.14.1...v3.15.0) (2022-03-16)
+
+
+### Bug Fixes
+
+* change the import ([6b1a15e](https://github.com/antimatter-studios/cognito-local/commit/6b1a15e37ba0e55a5fd2886e6e88db1ed5d4a0de))
+* exported symbol was wrong ([b5d7d57](https://github.com/antimatter-studios/cognito-local/commit/b5d7d5743e96b900337bf368161f0aff21bbec18))
+* forgot to change the repository url in some places ([1c575ad](https://github.com/antimatter-studios/cognito-local/commit/1c575ad352bc243f739f4ce87fadc68d079b5b41))
+* wrong branch in semantic release config ([5362d03](https://github.com/antimatter-studios/cognito-local/commit/5362d038eb7386f3bf67a458a066a4a6c63f0c82))
+
+
+### Features
+
+* new pipeline ([5e7a14c](https://github.com/antimatter-studios/cognito-local/commit/5e7a14c9dcdfad4bc7094b3adb2fe6c49a2b95c7))
+
 ## [3.14.1](https://github.com/christhomas/cognito-local/compare/v3.14.0...v3.14.1) (2022-02-13)
 
 
