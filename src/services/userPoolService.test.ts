@@ -11,9 +11,9 @@ import {
   User,
   UserPoolService,
   UserPoolServiceImpl,
-  Group,
   UserPoolServiceFactoryImpl,
 } from "./userPoolService";
+import { Group } from "../contracts/Group";
 import { MockUser } from "../models/UserModel";
 
 describe("UserPoolServiceFactory", () => {
