@@ -2,11 +2,11 @@ version: "3"
 
 services:
   cognito:
-    image: ghcr.io/christhomas/cognito-local:latest
+    image: ghcr.io/antimatter-studios/cognito-local:latest
     build:
       context: .
       cache_from:
-        - ghcr.io/christhomas/cognito-local:latest
+        - ghcr.io/antimatter-studios/cognito-local:latest
     ports:
       - 9230:9230
     volumes:

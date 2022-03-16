@@ -103,7 +103,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/christhomas/cognito-local.git"
+    "url": "https://github.com/antimatter-studios/cognito-local.git"
   },
   "release": {
     "defaultBranch": "master",
@@ -117,7 +117,7 @@
       }],
       ["@codedependant/semantic-release-docker", {
         "dockerLogin": false,
-        "dockerImage": "christhomas/cognito-local",
+        "dockerImage": "antimatter-studios/cognito-local",
         "dockerRegistry": "ghcr.io"
       }],
       ["@semantic-release/git", {
