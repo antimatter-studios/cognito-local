@@ -106,8 +106,8 @@
     "url": "https://github.com/antimatter-studios/cognito-local.git"
   },
   "release": {
-    "defaultBranch": "master",
-    "branches": ["master", "next"],
+    "defaultBranch": "main",
+    "branches": ["main"],
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
